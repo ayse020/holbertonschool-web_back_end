@@ -27,14 +27,21 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
     # Execute all tasks concurrently
     delays = await asyncio.gather(*tasks)
     
-    # Sort delays without using sort() - using bubble sort
+    # Sort delays without using sort() - using OPTIMIZED bubble sort
     sorted_delays = list(delays)
+    n_len = len(sorted_delays)
     
-    # Bubble sort implementation
-    for i in range(len(sorted_delays)):
-        for j in range(0, len(sorted_delays) - i - 1):
+    # OPTIMIZED Bubble sort implementation
+    for i in range(n_len):
+        swapped = False
+        for j in range(0, n_len - i - 1):
             if sorted_delays[j] > sorted_delays[j + 1]:
                 # Swap elements
                 sorted_delays[j], sorted_delays[j + 1] = sorted_delays[j + 1], sorted_delays[j]
+                swapped = True
+        
+        # If no swapping happened, list is already sorted
+        if not swapped:
+            break
     
     return sorted_delays
