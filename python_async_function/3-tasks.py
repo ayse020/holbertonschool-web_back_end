@@ -19,6 +19,8 @@ def task_wait_random(max_delay: int) -> asyncio.Task:
     Returns:
         asyncio.Task: Task object for wait_random
     """
-    task = asyncio.create_task(wait_random(max_delay))
-
+    # Use ensure_future which works in both sync and async contexts
+    # It creates a task from a coroutine
+    coro = wait_random(max_delay)
+    task = asyncio.ensure_future(coro)
     return task
