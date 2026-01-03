@@ -12,22 +12,24 @@ task_wait_random = __import__('3-tasks').task_wait_random
 
 async def task_wait_n(n: int, max_delay: int) -> List[float]:
     """
-    Spawn task_wait_random n times with the specified max_delay
+    Execute task_wait_random multiple times
 
     Args:
-        n: Number of times to spawn task_wait_random
-        max_delay: Maximum delay for each task_wait_random call
+        n: execution count
+        max_delay: delay limit
 
     Returns:
-        List of delays in ascending order (without using sort())
+        ordered delay values
     """
-    # Create all tasks
     tasks = [task_wait_random(max_delay) for _ in range(n)]
 
-    # Collect results as they complete
-    delays = []
-    for task in asyncio.as_completed(tasks):
-        delay = await task
-        delays.append(delay)
+    all_values = await asyncio.gather(*tasks)
 
-    return delays
+    ordered = []
+    for val in all_values:
+        pos = 0
+        while pos < len(ordered) and val > ordered[pos]:
+            pos += 1
+        ordered.insert(pos, val)
+
+    return ordered
