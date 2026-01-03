@@ -24,21 +24,10 @@ async def task_wait_n(n: int, max_delay: int) -> List[float]:
     # Create all tasks
     tasks = [task_wait_random(max_delay) for _ in range(n)]
 
-    # Get results
-    results = []
+    # Collect results as they complete
+    delays = []
     for task in asyncio.as_completed(tasks):
-        result = await task
-        results.append(result)
+        delay = await task
+        delays.append(delay)
 
-    # Sort without using sort() - bubble sort
-    sorted_results = results[:]
-    n_len = len(sorted_results)
-    for i in range(n_len):
-        for j in range(0, n_len - i - 1):
-            if sorted_results[j] > sorted_results[j + 1]:
-                # Swap
-                temp = sorted_results[j]
-                sorted_results[j] = sorted_results[j + 1]
-                sorted_results[j + 1] = temp
-
-    return sorted_results
+    return delays
