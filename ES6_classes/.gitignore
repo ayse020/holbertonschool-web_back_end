@@ -1,0 +1,12 @@
+# Test files
+*-test.js
+*-main.js
+test-*.js
+jest-*.js
+simulate-*.js
+
+# Node modules
+node_modules/
+
+# Logs
+*.log

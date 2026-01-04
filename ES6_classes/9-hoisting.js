@@ -1,3 +1,4 @@
+// Sinifləri yuxarıda təyin edək (hoisting qaydası)
 export class HolbertonClass {
   constructor(year, location) {
     this._year = year;
@@ -33,6 +34,7 @@ export class StudentHolberton {
   }
 }
 
+// Obyektləri yaradaq
 const class2019 = new HolbertonClass(2019, 'San Francisco');
 const class2020 = new HolbertonClass(2020, 'San Francisco');
 
@@ -42,4 +44,9 @@ const student3 = new StudentHolberton('Albert', 'Clinton', class2019);
 const student4 = new StudentHolberton('Donald', 'Bush', class2019);
 const student5 = new StudentHolberton('Jason', 'Sandler', class2019);
 
-export const listOfStudents = [student1, student2, student3, student4, student5];
+// Array yaradaq
+const listOfStudents = [student1, student2, student3, student4, student5];
+
+// İki üsulla export edək (təhlükəsizlik üçün)
+export { listOfStudents };
+export default listOfStudents;
