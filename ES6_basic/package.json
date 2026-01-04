@@ -1,0 +1,13 @@
+{
+  "name": "es6_basic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "0-constants.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
