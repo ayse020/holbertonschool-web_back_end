@@ -40,7 +40,7 @@ const app = express();
 
 // '/' endpoint
 app.get('/', (req, res) => {
-  res.type('text').send('Hello Holberton School!');
+  res.status(200).type('text').send('Hello Holberton School!');
 });
 
 // '/students' endpoint
@@ -48,15 +48,15 @@ app.get('/students', async (req, res) => {
   const databasePath = process.argv[2];
   
   if (!databasePath) {
-    res.type('text').status(500).send('This is the list of our students\nCannot load the database');
+    res.status(500).type('text').send('This is the list of our students\nCannot load the database');
     return;
   }
   
   try {
     const studentsInfo = await countStudents(databasePath);
-    res.type('text').send(`This is the list of our students\n${studentsInfo}`);
+    res.status(200).type('text').send(`This is the list of our students\n${studentsInfo}`);
   } catch (error) {
-    res.type('text').status(500).send(`This is the list of our students\n${error.message}`);
+    res.status(500).type('text').send(`This is the list of our students\n${error.message}`);
   }
 });
 
