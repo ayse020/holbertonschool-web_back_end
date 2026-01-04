@@ -1,0 +1,10 @@
+# Test faylları
+*.mjs
+test-*.js
+package.json
+package-lock.json
+node_modules/
+
+# Sistem faylları
+.DS_Store
+Thumbs.db
