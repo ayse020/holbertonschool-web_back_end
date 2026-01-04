@@ -5,7 +5,7 @@ const fs = require('fs').promises;
 async function countStudents(path) {
   try {
     const data = await fs.readFile(path, 'utf8');
-    const lines = data.split('\n').filter(line => line.trim() !== '');
+    const lines = data.split('\n').filter((line) => line.trim() !== '');
     
     if (lines.length <= 1) {
       return 'Number of students: 0';
@@ -14,7 +14,7 @@ async function countStudents(path) {
     const students = lines.slice(1); // Başlıq xəttini çıxar
     const fields = {};
     
-    students.forEach(student => {
+    students.forEach((student) => {
       const [firstname, , , field] = student.split(',');
       
       if (!fields[field]) {
