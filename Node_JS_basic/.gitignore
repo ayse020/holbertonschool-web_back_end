@@ -1,2 +1,14 @@
-0-main.js
+# Test files
+2-main_0.js
+2-main_1.js
+database.csv
+*.csv
+
+# Node modules
 node_modules/
+
+# Logs
+*.log
+
+# Environment variables
+.env
