@@ -1,22 +1,19 @@
 // 1-stdin.js
+process.stdout.write('Welcome to Holberton School, what is your name?\n');
 
-// Welcome mesajını çap et
-console.log('Welcome to Holberton School, what is your name?');
-
-// stdin-dan oxumaq üçün gözlə
 process.stdin.on('readable', () => {
-  // stdin-dan məlumatı oxu
-  const name = process.stdin.read();
-  
-  // Əgər məlumat varsa (null deyilsə)
-  if (name !== null) {
-    // İstifadəçinin adını çap et
-    // toString() ilə Buffer-u string-ə çevir və trim() ilə boşluqları sil
-    process.stdout.write(`Your name is: ${name.toString().trim()}\n`);
+  const chunk = process.stdin.read();
+  if (chunk !== null) {
+    // Hex dump göstərir ki, bizdə "Guillaume\r\n" var
+    // Test isə "Guillaume\r" gözləyir
+    // Onda \n-i silək
+    const str = chunk.toString();
+    // Yalnız \n-i silək (əgər varsa)
+    const output = str.endsWith('\n') ? str.substring(0, str.length - 1) : str;
+    process.stdout.write(`Your name is: ${output}`);
   }
 });
 
-// stdin bağlandıqda (CTRL+D və ya pipe bitdikdə)
 process.stdin.on('end', () => {
-  console.log('This important software is now closing');
+  process.stdout.write('This important software is now closing\n');
 });
