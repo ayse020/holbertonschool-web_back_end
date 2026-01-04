@@ -44,18 +44,20 @@ const app = http.createServer(async (req, res) => {
     res.statusCode = 200;
     res.end('Hello Holberton School!');
   } else if (req.url === '/students') {
-    res.statusCode = 200;
     const databasePath = process.argv[2];
     
     if (!databasePath) {
+      res.statusCode = 500;
       res.end('This is the list of our students\nCannot load the database');
       return;
     }
     
     try {
       const studentsInfo = await countStudents(databasePath);
+      res.statusCode = 200;
       res.end(`This is the list of our students\n${studentsInfo}`);
     } catch (error) {
+      res.statusCode = 500;
       res.end(`This is the list of our students\n${error.message}`);
     }
   } else {
