@@ -1,0 +1,9 @@
+{
+  "name": "es6-classes",
+  "version": "1.0.0",
+  "description": "ES6 Classes tasks",
+  "scripts": {
+    "dev": "node"
+  },
+  "type": "module"
+}
