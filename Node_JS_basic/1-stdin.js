@@ -1,19 +1,35 @@
 // 1-stdin.js
-process.stdout.write('Welcome to Holberton School, what is your name?\n');
+// Node.js program that handles stdin input properly
 
-process.stdin.on('data', (data) => {
-  const input = data.toString();
-  
-  let name = input;
-  if (name.endsWith('\r\n')) {
-    name = name.slice(0, -1); // \n-i sil
-  } else if (name.endsWith('\n')) {
-    name = name.slice(0, -1) + '\r'; // \n-i \r ilə əvəz et
+console.log('Welcome to Holberton School, what is your name?');
+
+// Set encoding for stdin
+process.stdin.setEncoding('utf8');
+
+// Variable to track if we've already processed input
+let inputProcessed = false;
+
+// Handle user input
+process.stdin.on('data', (input) => {
+  if (!inputProcessed) {
+    const name = input.trim();
+    console.log(`Your name is: ${name}`);
+    inputProcessed = true;
+    
+    // Check if stdin is still open
+    if (!process.stdin.isTTY) {
+      // For non-interactive mode (pipes), end the stream
+      process.stdin.end();
+    }
   }
-  
-  process.stdout.write(`Your name is: ${name}`);
 });
 
+// Handle end of input
 process.stdin.on('end', () => {
-  process.stdout.write('This important software is now closing\n');
+  console.log('This important software is now closing');
 });
+
+// For TTY mode (interactive), resume stdin
+if (process.stdin.isTTY) {
+  process.stdin.resume();
+}
