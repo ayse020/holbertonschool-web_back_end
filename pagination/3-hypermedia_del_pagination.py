@@ -55,7 +55,11 @@ class Server:
                 count += 1
             current_index += 1
 
-        next_index = current_index if current_index < len(self.dataset()) else None
+        # Determine next_index with proper line breaks
+        if current_index < len(self.dataset()):
+            next_index = current_index
+        else:
+            next_index = None
 
         return {
             "index": index,
