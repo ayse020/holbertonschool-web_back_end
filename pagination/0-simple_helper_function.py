@@ -3,12 +3,22 @@
 Simple helper function for pagination
 """
 
-def index_range(page, page_size):
-    """
-    Returns a tuple of size two containing a start index and an end index
-    for pagination.
-    """
-    start_index = (page - 1) * page_size
-    end_index = start_index + page_size
-    return (start_index, end_index)
 
+def index_range(page: int, page_size: int) -> tuple:
+    """
+    Returns a tuple containing start index and end index for pagination
+    
+    Args:
+        page (int): The current page number (1-indexed)
+        page_size (int): The number of items per page
+        
+    Returns:
+        tuple: (start_index, end_index)
+    """
+    if page < 1 or page_size < 1:
+        raise ValueError("Page and page_size must be positive integers")
+    
+    start_index = (page - 1) * page_size
+    end_index = page * page_size
+    
+    return (start_index, end_index)
