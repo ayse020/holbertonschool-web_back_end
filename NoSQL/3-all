@@ -1,3 +1,2 @@
-// school kolleksiyasındakı bütün sənədləri siyahıya almaq üçün skript
-use my_db
+// List all documents in the school collection
 db.school.find()
