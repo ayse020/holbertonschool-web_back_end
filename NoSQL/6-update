@@ -1,3 +1,5 @@
-// 'Holberton school' adlı sənədi 'Holberton School' olaraq yeniləmək üçün skript
-use my_db
-db.school.update({ name: "Holberton school" }, { $set: { name: "Holberton School" } })
+// my comment
+db.school.updateMany(
+  { name: "Holberton school" },
+  { $set: { address: "972 Mission street" } }
+)
