@@ -1,10 +1,9 @@
 export default function taskBlock(trueOrFalse) {
-  let task = false;
-  let task2 = true;
+  const task = false;
+  const task2 = true;
 
   if (trueOrFalse) {
-    let task = true;
-    let task2 = false;
+    // Bu blok boş qalır, çünki dəyişənlər dəyişdirilməməlidir
   }
 
   return [task, task2];
