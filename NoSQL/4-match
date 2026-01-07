@@ -1,3 +1,2 @@
-// 'Holberton school' adlı bütün sənədləri tapmaq üçün skript
-use my_db
+// my comment
 db.school.find({ name: "Holberton school" })
