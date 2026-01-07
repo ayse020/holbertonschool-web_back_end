@@ -1,0 +1,3 @@
+// my_db verilənlər bazasına sənəd daxil etmək üçün skript
+use my_db
+db.school.insert({ name: "Holberton school" })

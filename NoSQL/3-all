@@ -1,0 +1,3 @@
+// school kolleksiyasındakı bütün sənədləri siyahıya almaq üçün skript
+use my_db
+db.school.find()

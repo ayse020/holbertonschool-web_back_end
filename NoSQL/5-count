@@ -1,0 +1,3 @@
+// school kolleksiyasındakı sənədlərin sayını göstərmək üçün skript
+use my_db
+db.school.count()
