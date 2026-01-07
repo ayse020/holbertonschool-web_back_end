@@ -2,6 +2,7 @@
 """
 Deletion-resilient hypermedia pagination
 """
+
 import csv
 from typing import List, Dict
 
@@ -23,7 +24,6 @@ class Server:
                 reader = csv.reader(f)
                 dataset = [row for row in reader]
             self.__dataset = dataset[1:]
-
         return self.__dataset
 
     def indexed_dataset(self) -> Dict[int, List]:
@@ -37,43 +37,29 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
+        """Return deletion-resilient hypermedia pagination.
         """
-        Get hypermedia pagination information with deletion resilience
-        
-        Args:
-            index: Current start index of the return page
-            page_size: Number of items per page
-            
-        Returns:
-            Dict with pagination info:
-            - index: current start index
-            - next_index: next index to query
-            - page_size: current page size
-            - data: actual page of dataset
-        """
-        dataset = self.indexed_dataset()
-        data_length = len(dataset)
-        
-        # Validate index is within valid range
-        assert index is not None and 0 <= index < data_length
-        
+        assert isinstance(index, int) and index >= 0, \
+            "index must be a non-negative integer"
+        assert isinstance(page_size, int) and page_size > 0, \
+            "page_size must be a positive integer"
+
+        indexed_data = self.indexed_dataset()
         data = []
         current_index = index
-        items_collected = 0
-        
-        # Collect data until we reach page_size or end of dataset
-        while items_collected < page_size and current_index < data_length:
-            if current_index in dataset:
-                data.append(dataset[current_index])
-                items_collected += 1
+        count = 0
+
+        while count < page_size and current_index < len(self.dataset()):
+            if current_index in indexed_data:
+                data.append(indexed_data[current_index])
+                count += 1
             current_index += 1
-        
-        # Calculate next_index
-        next_index = current_index if current_index < data_length else None
-        
+
+        next_index = current_index if current_index < len(self.dataset()) else None
+
         return {
-            'index': index,
-            'next_index': next_index,
-            'page_size': len(data),
-            'data': data
+            "index": index,
+            "next_index": next_index,
+            "page_size": len(data),
+            "data": data
         }
