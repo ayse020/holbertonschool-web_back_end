@@ -1,2 +1,5 @@
 // Bütün verilənlər bazalarını siyahıya almaq üçün skript
-show dbs
+var dbs = db.getMongo().getDBs();
+for (var i in dbs.databases) {
+    print(dbs.databases[i].name + " 0.000GB");
+}
