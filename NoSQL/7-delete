@@ -1,3 +1,2 @@
-// 'Holberton School' adlı bütün sənədləri silmək üçün skript
-use my_db
-db.school.deleteMany({ name: "Holberton School" })
+// my comment
+db.school.deleteMany({ name: "Holberton school" })
