@@ -1,14 +1,16 @@
-process.stdout.write('Welcome to Holberton School, what is your name?\n');
+const readline = require('readline');  // 1. Addım
 
-process.stdin.on('data', (data) => {
-  const name = data.toString().trim();
-  // Test \r gözləyir
-  process.stdout.write(`Your name is: ${name}\r`);
-  process.stdin.end();
+const rl = readline.createInterface({   // 2. Addım
+  input: process.stdin,
+  output: process.stdout
 });
 
-process.stdin.on('end', () => {
-  process.stdout.write('This important software is now closing\n');
+rl.question('Welcome to Holberton School, what is your name?\n', (name) => {  // 3. Addım
+  console.log(`Your name is: ${name}`);
+  rl.close();
 });
 
-process.stdin.resume();
+rl.on('close', () => {   // 4. Addım
+  console.log('This important software is now closing');
+});
+

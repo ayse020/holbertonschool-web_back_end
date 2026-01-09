@@ -1,64 +1,53 @@
 const http = require('http');
 const fs = require('fs').promises;
 
-// Tələbələri saymaq üçün funksiya (3-read_file_async.js-dən)
+const app = http.createServer();
+
 async function countStudents(path) {
   try {
-    const data = await fs.readFile(path, 'utf8');
+    const data = await fs.readFile(path, 'utf-8');
     const lines = data.split('\n').filter((line) => line.trim() !== '');
-    
-    if (lines.length <= 1) {
-      return 'Number of students: 0';
-    }
-    
-    const students = lines.slice(1); // Başlıq xəttini çıxar
-    const fields = {};
-    
-    students.forEach((student) => {
-      const [firstname, , , field] = student.split(',');
-      
-      if (!fields[field]) {
-        fields[field] = [];
-      }
-      fields[field].push(firstname);
+    const headers = lines[0].split(',');
+    const students = lines.slice(1).map((line) => {
+      const record = line.split(',');
+      const student = {};
+      headers.forEach((header, idx) => {
+        student[header] = record[idx];
+      });
+      return student;
     });
-    
-    let result = `Number of students: ${students.length}`;
-    
+
+    const fields = {};
+    students.forEach((student) => {
+      if (!fields[student.field]) fields[student.field] = [];
+      fields[student.field].push(student.firstname);
+    });
+
+    let output = `Number of students: ${students.length}\n`;
     for (const [field, names] of Object.entries(fields)) {
-      result += `\nNumber of students in ${field}: ${names.length}. List: ${names.join(', ')}`;
+      output += `Number of students in ${field}: ${names.length}. List: ${names.join(', ')}\n`;
     }
-    
-    return result;
-  } catch (error) {
+    return output.trim();
+  } catch (err) {
     throw new Error('Cannot load the database');
   }
 }
 
-// HTTP server yaradırıq
-const app = http.createServer(async (req, res) => {
-  // Content-Type header'ını plain text olaraq təyin edirik
+app.on('request', async (req, res) => {
+  const dbFile = process.argv[2];
   res.setHeader('Content-Type', 'text/plain');
-  
+
   if (req.url === '/') {
     res.statusCode = 200;
     res.end('Hello Holberton School!');
   } else if (req.url === '/students') {
-    const databasePath = process.argv[2];
-    
-    if (!databasePath) {
-      res.statusCode = 500;
-      res.end('This is the list of our students\nCannot load the database');
-      return;
-    }
-    
+    res.statusCode = 200;
+    let output = 'This is the list of our students\n';
     try {
-      const studentsInfo = await countStudents(databasePath);
-      res.statusCode = 200;
-      res.end(`This is the list of our students\n${studentsInfo}`);
-    } catch (error) {
-      res.statusCode = 500;
-      res.end(`This is the list of our students\n${error.message}`);
+      output += await countStudents(dbFile);
+      res.end(output);
+    } catch (err) {
+      res.end(err.message);
     }
   } else {
     res.statusCode = 404;
@@ -66,9 +55,6 @@ const app = http.createServer(async (req, res) => {
   }
 });
 
-// Server 1245 portunda dinləyir
-app.listen(1245, () => {
-  console.log('Server listening on port 1245');
-});
+app.listen(1245);
 
 module.exports = app;
