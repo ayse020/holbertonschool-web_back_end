@@ -6,6 +6,7 @@ const app = http.createServer();
 async function countStudents(path) {
   try {
     const data = await fs.readFile(path, 'utf-8');
+
     const lines = data.split('\n').filter((line) => line.trim() !== '');
     const headers = lines[0].split(',');
     const students = lines.slice(1).map((line) => {
@@ -19,7 +20,9 @@ async function countStudents(path) {
 
     const fields = {};
     students.forEach((student) => {
-      if (!fields[student.field]) fields[student.field] = [];
+      if (!fields[student.field]) {
+        fields[student.field] = [];
+      }
       fields[student.field].push(student.firstname);
     });
 
@@ -27,14 +30,15 @@ async function countStudents(path) {
     for (const [field, names] of Object.entries(fields)) {
       output += `Number of students in ${field}: ${names.length}. List: ${names.join(', ')}\n`;
     }
+
     return output.trim();
-  } catch (err) {
+  } catch (error) {
     throw new Error('Cannot load the database');
   }
 }
 
 app.on('request', async (req, res) => {
-  const dbFile = process.argv[2];
+  const database = process.argv[2];
   res.setHeader('Content-Type', 'text/plain');
 
   if (req.url === '/') {
@@ -43,11 +47,12 @@ app.on('request', async (req, res) => {
   } else if (req.url === '/students') {
     res.statusCode = 200;
     let output = 'This is the list of our students\n';
+
     try {
-      output += await countStudents(dbFile);
+      output += await countStudents(database);
       res.end(output);
-    } catch (err) {
-      res.end(err.message);
+    } catch (error) {
+      res.end(`${output}${error.message}`);
     }
   } else {
     res.statusCode = 404;
